@@ -45,7 +45,7 @@ public class GameManager {
     public static final Texture heroImage = new Texture(Gdx.files.internal("hero2.png"));
     private static final Texture enemyImage = new Texture(Gdx.files.internal("enemy2.png"));
     private static final Texture bulletImage = new Texture(Gdx.files.internal("droplet.png"));
-    private static final Texture blockImage = new Texture(Gdx.files.internal("bucket.png"));
+    private static final Texture blockImage = new Texture(Gdx.files.internal("wall.png"));
 
     public GameManager(Game game) {
         this.game = game;
