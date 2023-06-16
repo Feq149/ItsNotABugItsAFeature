@@ -9,6 +9,7 @@ import MVVM.view.VictoryScreen;
 import MVVM.view.Shape;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
 import static MVVM.model.LevelWinner.ENEMIES;
@@ -51,6 +52,9 @@ public class GameManager {
     private static final Texture enemyImage = new Texture(Gdx.files.internal("enemy2.png"));
     private static final Texture bulletImage = new Texture(Gdx.files.internal("droplet.png"));
     private static final Texture blockImage = new Texture(Gdx.files.internal("wall.png"));
+    public static final Sound soundtrackMusic = Gdx.audio.newSound(Gdx.files.internal("music/soundtrack.mp3"));
+    public static final Sound defeatMusic = Gdx.audio.newSound(Gdx.files.internal("music/endSound.mp3"));
+    public static final Sound victoryMusic = Gdx.audio.newSound(Gdx.files.internal("music/victorySound.mp3"));
 
     public GameManager(Game game) {
         this.game = game;
@@ -64,10 +68,13 @@ public class GameManager {
     public void changeScreenIfEnded() {
         var winner = determineLevelWinnerIfExists();
         if (winner.isPresent()) {
-            if(winner.get()== ENEMIES) {
+            soundtrackMusic.stop();
+            if(winner.get() == ENEMIES) {
+                defeatMusic.play();
                 game.setScreen(defeatScreen);
             }
             else {
+                victoryMusic.play();
                 game.setScreen(victoryScreen);
             }
         }
@@ -179,6 +186,7 @@ public class GameManager {
     }
 
     private void prepareNewLevel(int levelNumber) {
+        soundtrackMusic.loop();
         hero = new Character(HERO);
         List<Character> characters = new LinkedList<>();
         hero.x = (CAMERA_WIDTH - HERO_WIDTH) / 2;
