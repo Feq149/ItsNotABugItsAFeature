@@ -11,7 +11,7 @@ public class Level {
         this.number = number;
         this.characters = characters;
     }
-    
-    
-    
+
+
+
 }
