@@ -2,6 +2,7 @@ package MVVM.viewmodel;
 
 import MVVM.model.*;
 import MVVM.model.Character;
+import MVVM.view.DefeatScreen;
 import MVVM.view.GameScreen;
 import MVVM.view.MainMenuScreen;
 import MVVM.view.Shape;
@@ -29,6 +30,7 @@ public class GameManager {
     private CharacterMover characterMover;
     private final GameScreen gameScreen;
     private final MainMenuScreen mainMenuScreen;
+    private final DefeatScreen defeatScreen;
     private Character hero;
     private boolean bulletFired;
     private HpBarsSupplier hpBarsSupplier = new HpBarsSupplier();
@@ -42,13 +44,14 @@ public class GameManager {
         this.game = game;
         gameScreen = new GameScreen(this);
         mainMenuScreen = new MainMenuScreen(this);
+        defeatScreen = new DefeatScreen(this);
         game.setScreen(mainMenuScreen);
     }
 
     public void changeScreenIfEnded() {
         var winner = determineLevelWinnerIfExists();
         if (winner.isPresent()) {
-            game.setScreen(mainMenuScreen);
+            game.setScreen(defeatScreen);
         }
     }
 
