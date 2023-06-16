@@ -22,7 +22,7 @@ public class CharacterMover {
     private Map<Character, Shape> shapes;
     private CollisionsDetector collisionsDetector;
 
-    public CharacterMover(Map<Character, Shape> shapes) {
+    public CharacterMover(Map<Character, Shape> shapes, CollisionsDetector collisionsDetector) {
         this.shapes = shapes;
         this.collisionsDetector = collisionsDetector;
     }
