@@ -2,13 +2,16 @@ package MVVM.viewmodel;
 
 import MVVM.model.*;
 import MVVM.model.Character;
+import MVVM.view.DefeatScreen;
 import MVVM.view.GameScreen;
 import MVVM.view.MainMenuScreen;
+import MVVM.view.VictoryScreen;
 import MVVM.view.Shape;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
+import static MVVM.model.LevelWinner.ENEMIES;
 import static MVVM.model.Role.*;
 import static MVVM.view.GameScreen.*;
 import static com.badlogic.gdx.math.MathUtils.random;
@@ -29,6 +32,8 @@ public class GameManager {
     private CharacterMover characterMover;
     private final GameScreen gameScreen;
     private final MainMenuScreen mainMenuScreen;
+    private final DefeatScreen defeatScreen;
+    private final VictoryScreen victoryScreen;
     private Character hero;
     private boolean bulletFired;
     private HpBarsSupplier hpBarsSupplier = new HpBarsSupplier();
@@ -51,18 +56,31 @@ public class GameManager {
         this.game = game;
         gameScreen = new GameScreen(this);
         mainMenuScreen = new MainMenuScreen(this);
+        defeatScreen = new DefeatScreen(this);
+        victoryScreen = new VictoryScreen(this);
         game.setScreen(mainMenuScreen);
     }
 
     public void changeScreenIfEnded() {
         var winner = determineLevelWinnerIfExists();
         if (winner.isPresent()) {
-            game.setScreen(mainMenuScreen);
+            if(winner.get()== ENEMIES) {
+                game.setScreen(defeatScreen);
+            }
+            else {
+                game.setScreen(victoryScreen);
+            }
         }
     }
 
-    public void menuScreenTapped() {
-        prepareNewLevel();
+    public void startNewLevel() {
+        prepareNewLevel(1);
+        game.setScreen(gameScreen);
+    }
+
+    public void startNextLevel() {
+        int nextLevelNumber = level == null ? 1 : level.number + 1;
+        prepareNewLevel(nextLevelNumber);
         game.setScreen(gameScreen);
     }
 
@@ -160,8 +178,7 @@ public class GameManager {
         }
     }
 
-    private void prepareNewLevel() {
-        var levelNumber = level == null ? 1 : level.number + 1;
+    private void prepareNewLevel(int levelNumber) {
         hero = new Character(HERO);
         List<Character> characters = new LinkedList<>();
         hero.x = (CAMERA_WIDTH - HERO_WIDTH) / 2;
@@ -212,7 +229,7 @@ public class GameManager {
 
     private Optional<LevelWinner> determineLevelWinnerIfExists() {
         if (hero.healthPoints <= 0) {
-            return Optional.of(LevelWinner.ENEMIES);
+            return Optional.of(ENEMIES);
         }
         Optional<LevelWinner> winner = Optional.of(LevelWinner.HERO);
         for (Character enemy : shapes.keySet().stream().filter(e -> e.role == ENEMY).toList()) {
