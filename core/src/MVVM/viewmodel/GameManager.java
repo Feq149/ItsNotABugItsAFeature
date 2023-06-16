@@ -217,7 +217,7 @@ public class GameManager {
         addHeroShapeForCurrentLevel();
         addEnemyShapesForCurrentLevel();
         addBlocksForCurrentLevel();
-        characterMover = new CharacterMover(shapes);
+        characterMover = new CharacterMover(shapes, new CollisionsDetector());
     }
     private void addBlocksForCurrentLevel() {
         level.characters.stream().filter(c -> c.role == BLOCK).forEach(block -> {
