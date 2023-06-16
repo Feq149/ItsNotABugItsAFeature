@@ -56,7 +56,7 @@ public class GameManager {
     }
 
     public void menuScreenTapped() {
-        prepareNewLevel();
+        prepareNewLevel(1);
         game.setScreen(gameScreen);
     }
 
@@ -143,6 +143,28 @@ public class GameManager {
 
     private void prepareNewLevel() {
         var levelNumber = level == null ? 1 : level.number + 1;
+        hero = new Character(HERO);
+        List<Character> characters = new LinkedList<>();
+        hero.x = (CAMERA_WIDTH - HERO_WIDTH) / 2;
+        hero.y = (CAMERA_HEIGHT - HERO_HEIGHT) / 2;
+        hero.coolDownPeriodInMillis = 1000;
+        hero.speed = 200;
+        characters.add(hero);
+        for (int i = 0; i < levelNumber; i++) {
+            var enemy = new Character(ENEMY);
+            enemy.x = random(0, CAMERA_WIDTH - ENEMY_WIDTH);
+            enemy.y = random(0, CAMERA_HEIGHT - ENEMY_HEIGHT);
+            enemy.coolDownPeriodInMillis = 1000;
+            enemy.speed = 10 * levelNumber;
+            characters.add(enemy);
+        }
+        level = new Level(levelNumber, characters);
+        initializeShapesMap();
+    }
+    // Made this to avoid merge conflicts
+    // TODO:
+    //  - Leave only this method
+    private void prepareNewLevel(int levelNumber){
         hero = new Character(HERO);
         List<Character> characters = new LinkedList<>();
         hero.x = (CAMERA_WIDTH - HERO_WIDTH) / 2;
