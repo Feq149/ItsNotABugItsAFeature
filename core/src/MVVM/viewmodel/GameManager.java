@@ -118,8 +118,9 @@ public class GameManager {
                 var bullet = new Character(ENEMY_BULLET);
                 bullet.x = enemy.x;
                 bullet.y = enemy.y;
-                bullet.speed = 2 * enemy.speed;
+                bullet.speed = enemy.speed;
                 bullet.speedVector = new Vector2((hero.x - enemy.x), hero.y - enemy.y);
+                bullet.speedVector.limit(bullet.speed);
                 bullets.add(bullet);
             }
         });

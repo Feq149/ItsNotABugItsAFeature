@@ -97,7 +97,7 @@ public class CharacterMover {
     }
 
     public void moveCharacter(Character character, Vector2 speedVector, float deltaTime) {
-        character.x += speedVector.x * deltaTime;
-        character.y += speedVector.y * deltaTime;
+        character.x += speedVector.x * deltaTime * character.speed;
+        character.y += speedVector.y * deltaTime * character.speed;
     }
 }
