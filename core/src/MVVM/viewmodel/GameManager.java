@@ -177,10 +177,12 @@ public class GameManager {
             enemy.speed = 10 * levelNumber;
             characters.add(enemy);
         }
-        Character block = new Character(BLOCK);
-        block.x = 300;
-        block.y = 300;
-        characters.add(block);
+        for (int i = 0; i < 10; i++) {
+            Character block = new Character(BLOCK);
+            block.x = random(0, CAMERA_WIDTH - BLOCK_WIDTH);
+            block.y = random(0, CAMERA_HEIGHT - BLOCK_HEIGHT);
+            characters.add(block);
+        }
         level = new Level(levelNumber, characters);
         initializeShapesMap();
     }
