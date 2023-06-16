@@ -41,9 +41,9 @@ public class DefeatScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        font.draw(batch, "YOU LOST! What a pity :(", 100, 150);
-        font.draw(batch, "Tap anywhere to start again!", 100, 100);
-        batch.draw(button.getTexture(), 100, 200, button.getRegionWidth(), button.getRegionHeight());
+        font.draw(batch, "YOU LOST! What a pity :(", 100, 350);
+        font.draw(batch, "Tap anywhere to start again!", 100, 300);
+        batch.draw(button.getTexture(), 100, 100, button.getRegionWidth(), button.getRegionHeight());
         batch.end();
 
 
@@ -60,7 +60,7 @@ public class DefeatScreen implements Screen {
         int mouseX = Gdx.input.getX();
         int mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
         if(mouseX >= 100 && mouseX <= 200){
-            if(mouseY >= 350 && mouseY  <= 400){
+            if(mouseY >= 170 && mouseY  <= 250){
                 dispose();
                 Gdx.app.exit();
             }
