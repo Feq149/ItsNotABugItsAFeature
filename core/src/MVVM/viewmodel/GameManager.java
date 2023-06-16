@@ -78,6 +78,16 @@ public class GameManager {
             addBulletShotByHero();
         }
         characterMover.moveHero(gameScreen.getDeltaTime());
+        shapes.entrySet().stream().filter(e -> e.getKey().role == ENEMY || e.getKey().role == HERO)
+                .forEach(e -> {
+                    var character = e.getKey();
+                    var shape = e.getValue();
+                    var blocksRunInto = collisionsDetector.fetchBlocksCharacterRanInto(shape, shapes);
+                    for(var block : blocksRunInto) {
+                        characterMover.fixCharacterChoordinatesToStayClearOfBlock(character, block,
+                                shape.rectangle.width, shape.rectangle.height);
+                    }
+                });
         var bulletOutOfBounds = characterMover.moveBulletsAndReturnBulletsOutOfBounds(gameScreen.getDeltaTime());
         bulletOutOfBounds.forEach(bullet -> shapes.remove(bullet));
 

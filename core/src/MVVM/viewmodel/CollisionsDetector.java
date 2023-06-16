@@ -2,6 +2,7 @@ package MVVM.viewmodel;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static MVVM.model.Role.*;
@@ -10,6 +11,7 @@ import static MVVM.view.GameScreen.*;
 import static MVVM.view.GameScreen.ENEMY_WIDTH;
 import MVVM.model.*;
 import MVVM.model.Character;
+import MVVM.view.Shape;
 
 public class CollisionsDetector {
 
@@ -47,6 +49,14 @@ public class CollisionsDetector {
             });
         });
         return bulletsToRemove;
+    }
+    public List<Character> fetchBlocksCharacterRanInto(Shape character, Map<Character, Shape> shapes) {
+        return shapes.entrySet().stream()
+                .filter(e -> e.getKey().role == BLOCK)
+                .filter(e -> e.getValue().rectangle.overlaps(character.rectangle))
+                .map(e -> e.getKey())
+                .toList();
+
     }
 
 }

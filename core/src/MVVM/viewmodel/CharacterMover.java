@@ -1,12 +1,11 @@
 package MVVM.viewmodel;
 
+import static MVVM.model.Direction.*;
 import static java.lang.Float.max;
 import static java.lang.Float.min;
 import static java.lang.Math.signum;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -21,9 +20,11 @@ import static MVVM.view.GameScreen.*;
 public class CharacterMover {
 
     private Map<Character, Shape> shapes;
+    private CollisionsDetector collisionsDetector;
 
     public CharacterMover(Map<Character, Shape> shapes) {
         this.shapes = shapes;
+        this.collisionsDetector = collisionsDetector;
     }
 
     public void moveEnemies(float deltaTime) {
@@ -36,7 +37,36 @@ public class CharacterMover {
             enemy.y += enemy.speed * deltaTime * signum(yDistanceToHero);
         }
     }
-
+    public void fixCharacterChoordinatesToStayClearOfBlock(Character character, Character block,
+                                                           float characterWidth, float characterHeight) {
+        var leftMoveDelta =  character.x - block.x + characterWidth;
+        var rightMoveDelta = block.x - character.x + BLOCK_WIDTH;
+        var upMoveDelta = block.y - character.y + BLOCK_HEIGHT;
+        var downMoveDelta = character.y - block.y + characterHeight;
+        SortedMap<Float, Direction> deltas = new TreeMap<>();
+        deltas.put(upMoveDelta, NORTH);
+        deltas.put(downMoveDelta, SOUTH);
+        deltas.put(leftMoveDelta, WEST);
+        deltas.put(rightMoveDelta, EAST);
+        var delta = deltas.firstKey();
+        var direction = deltas.get(delta);
+        switch (direction) {
+            case NORTH -> {
+                character.y += delta;
+            }
+            case SOUTH -> {
+                character.y -= delta;
+            }
+            case EAST -> {
+                character.x += delta;
+            }
+            case WEST -> {
+                character.x -= delta;
+            }
+            default ->
+                    throw new AssertionError();
+        }
+    }
     public List<Character> moveBulletsAndReturnBulletsOutOfBounds(float deltaTime) {
         List<Character> bulletsOutOfBounds = new LinkedList<>();
         var heroBullets = shapes.keySet().stream().filter(c -> c.role == HERO_BULLET).collect(toList());
@@ -100,4 +130,5 @@ public class CharacterMover {
         character.x += speedVector.x * deltaTime * character.speed;
         character.y += speedVector.y * deltaTime * character.speed;
     }
+
 }
