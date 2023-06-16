@@ -50,8 +50,9 @@ public class GameManager {
 
     public static final Texture heroImage = new Texture(Gdx.files.internal("hero2.png"));
     private static final Texture enemyImage = new Texture(Gdx.files.internal("enemy2.png"));
-    private static final Texture bulletImage = new Texture(Gdx.files.internal("droplet.png"));
+    private static final Texture bulletImage = new Texture(Gdx.files.internal("bullet2.png"));
     private static final Texture blockImage = new Texture(Gdx.files.internal("wall.png"));
+    public static final Texture floorImage = new Texture(Gdx.files.internal("floor1.png"));
     public static final Sound soundtrackMusic = Gdx.audio.newSound(Gdx.files.internal("music/soundtrack.mp3"));
     public static final Sound defeatMusic = Gdx.audio.newSound(Gdx.files.internal("music/endSound.mp3"));
     public static final Sound victoryMusic = Gdx.audio.newSound(Gdx.files.internal("music/victorySound.mp3"));
