@@ -33,6 +33,14 @@ public class GameManager {
     private boolean bulletFired;
     private HpBarsSupplier hpBarsSupplier = new HpBarsSupplier();
     private CollisionsDetector collisionsDetector = new CollisionsDetector();
+    private void removeDeadEnemies() {
+        for (var i = shapes.entrySet().iterator(); i.hasNext();) {
+            Character enemy = i.next().getKey();
+            if (enemy.healthPoints <= 0) {
+                i.remove();
+            }
+        }
+    }
 
     public static final Texture heroImage = new Texture(Gdx.files.internal("hero2.png"));
     private static final Texture enemyImage = new Texture(Gdx.files.internal("enemy2.png"));
@@ -71,8 +79,10 @@ public class GameManager {
         characterMover.moveHero(gameScreen.getDeltaTime());
         var bulletOutOfBounds = characterMover.moveBulletsAndReturnBulletsOutOfBounds(gameScreen.getDeltaTime());
         bulletOutOfBounds.forEach(bullet -> shapes.remove(bullet));
+
         var bulletsThatHit = collisionsDetector.detectHitsAndReturnBulletsToRemove(shapes.keySet());
         bulletsThatHit.forEach(bullet -> shapes.remove(bullet));
+        removeDeadEnemies();
         adjustShapesPositionToMatchCharacters();
         List<Shape> hpBars = hpBarsSupplier.generateHpBars(shapes.keySet());
         var allShapes = new LinkedList<>(shapes.values());
