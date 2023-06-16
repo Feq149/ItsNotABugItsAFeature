@@ -45,6 +45,7 @@ public class GameManager {
     public static final Texture heroImage = new Texture(Gdx.files.internal("hero2.png"));
     private static final Texture enemyImage = new Texture(Gdx.files.internal("enemy2.png"));
     private static final Texture bulletImage = new Texture(Gdx.files.internal("droplet.png"));
+    private static final Texture blockImage = new Texture(Gdx.files.internal("bucket.png"));
 
     public GameManager(Game game) {
         this.game = game;
@@ -166,6 +167,10 @@ public class GameManager {
             enemy.speed = 10 * levelNumber;
             characters.add(enemy);
         }
+        Character block = new Character(BLOCK);
+        block.x = 300;
+        block.y = 300;
+        characters.add(block);
         level = new Level(levelNumber, characters);
         initializeShapesMap();
     }
@@ -174,9 +179,14 @@ public class GameManager {
         shapes.clear();
         addHeroShapeForCurrentLevel();
         addEnemyShapesForCurrentLevel();
+        addBlocksForCurrentLevel();
         characterMover = new CharacterMover(shapes);
     }
-
+    private void addBlocksForCurrentLevel() {
+        level.characters.stream().filter(c -> c.role == BLOCK).forEach(block -> {
+            shapes.put(block, new Shape(blockImage, new Rectangle(block.x, block.y, BLOCK_WIDTH, BLOCK_HEIGHT)));
+        });
+    }
     private void addHeroShapeForCurrentLevel() {
         var rectangle = new Rectangle(hero.x, hero.y, HERO_WIDTH, HERO_HEIGHT);
         shapes.put(hero, new Shape(heroImage, rectangle));

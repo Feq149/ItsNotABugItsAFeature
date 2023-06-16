@@ -18,6 +18,8 @@ public class GameScreen implements Screen {
     public static final float HERO_HEIGHT = 100;
     public static final float ENEMY_WIDTH = 50;
     public static final float ENEMY_HEIGHT = 50;
+    public static final float BLOCK_WIDTH = 50;
+    public static final float BLOCK_HEIGHT = 50;
     public static final int BULLET_RECTANGLE_SIZE = 20;
 
     public static final float CAMERA_WIDTH = 1000;
